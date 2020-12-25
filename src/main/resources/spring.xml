@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	   xmlns:jee="http://www.springframework.org/schema/jee"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	   xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+<!--	SpringMVC配置文件-->
+	<context:component-scan base-package="com.zzcedu" />
+<!--		只扫描控制器-->
+<!--		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
+<!--	</context:component-scan>-->
+<!--	视图解析器-->
+<!--	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+<!--		<property name="prefix" value="/WEB-INF/"/>-->
+<!--		<property name="suffix" value=".jsp"/>-->
+<!--	</bean>-->
+<!--	两个标准配置	-->
+<!--	能支持SpringMVC更高级的一些功能  如JSR303校验，快捷的Ajax    最重要的是映射请求-->
+	<mvc:annotation-driven/>
+<!--	将SpringMVC不能处理的请求交给TomCat-->
+<!--	<mvc:default-servlet-handler/>-->
+<!--	================数据源的配置-->
+<!--	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">-->
+<!--		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+<!--		<property name="username" value="root"/>-->
+<!--		<property name="password" value="123456"/>-->
+<!--		<property name="url" value="jdbc:mysql:///emp"/>-->
+<!--	</bean>-->
+
+
+<!--&lt;!&ndash;	=============================Mybatis 配置文件&ndash;&gt;-->
+<!--	<bean class="org.mybatis.spring.SqlSessionFactoryBean">-->
+<!--&lt;!&ndash;		指定Mybatis mepper文件的位置&ndash;&gt;-->
+<!--		<property name="mapperLocations" value="classpath:conf/*.xml"/>-->
+<!--		<property name="dataSource" ref="dataSource"/>-->
+<!--		&lt;!&ndash;		指定Mybatis全局配置文件的位置&ndash;&gt;-->
+<!--&lt;!&ndash;		<property name="configLocation" value="classpath:conf/*.xml"/>&ndash;&gt;-->
+<!--	</bean>-->
+<!--&lt;!&ndash; 配置扫描器	将Mybatis接口的实现加入到ioc容器中&ndash;&gt;-->
+<!--	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+<!--&lt;!&ndash;		扫描所有dao接口的实现，加入到ioc容器中&ndash;&gt;-->
+<!--		<property name="basePackage" value="com.zzcedu.dao"/>-->
+<!--	</bean>-->
+
+<!--	声明方面组件-->
+	<bean id="operationLogger" class="com.zzcedu.log.OperationLogger"/>
+	<!--	配置Aop-->
+	<aop:config>
+		<aop:aspect ref="operationLogger">
+<!--			  切入点（前置）   方面组件的方法位置         切入到的位置        -->
+			<aop:before method="logger" pointcut="within(com.zzcedu.controller..*)"/>
+<!--			后置通知-->
+			<aop:after-returning method="logger1" pointcut="within(com.zzcedu.controller..*)"/>
+<!--			异常通知-->
+<!--			<aop:after-throwing method="logger2" pointcut="within(com.zzcedu.controller..*)" throwing="e"/>-->
+<!--			最终通知-->
+			<aop:after method="logger3" pointcut="within(com.zzcedu.controller..*)"/>
+<!--			环绕通知-->
+			<aop:around method="logger4" pointcut="within(com.zzcedu.controller..*)"/>
+		</aop:aspect>
+	</aop:config>
+
+</beans>
+
+
+
+
+
+
+
+
+
+
