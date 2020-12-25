@@ -40,7 +40,7 @@ public class OperationLogger1 {
     }
     @Around("within(com.zzcedu.controller.HelloController)")
     public Object logger5(ProceedingJoinPoint point) throws Throwable {
-        //获取类名
+        //获取类名===========================
         String className = point.getTarget().getClass().getName();
         //获取方法名
         String methodName = point.getSignature().getName();
